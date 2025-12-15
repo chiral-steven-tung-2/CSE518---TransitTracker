@@ -87,6 +87,37 @@ Pre-built shadcn/ui components for consistent design:
 ### Public Assets (`public/`)
 - Static assets served directly
 
+## Code Architecture
+
+### Application Flow
+1. **Entry Point**: `main.tsx` initializes the React app and renders the root `App.tsx` component
+2. **Routing**: `App.tsx` manages navigation between MTA Bus and SBU Bus pages
+3. **Page Components**: Each page handles its own state, API calls, and user interactions
+4. **Service Layer**: Services encapsulate all external data fetching logic
+5. **UI Components**: Reusable shadcn/ui components provide consistent styling
+
+### Component Hierarchy
+```
+App.tsx (root)
+└── MainLayout.tsx (navigation wrapper)
+    ├── BusPage.tsx (MTA bus tracking)
+    │   ├── Map with live vehicles
+    │   ├── Route/stop search
+    │   └── Arrival predictions
+    └── SbuBusPage.tsx (SBU campus bus)
+        ├── Map with route geometry
+        ├── Route/stop selection
+        └── Next bus times
+```
+
+### Data Flow
+1. **User Input**: User selects a route or stop in the page component
+2. **Service Call**: Page component calls appropriate service function
+3. **API Request**: Service fetches data from external APIs (MTA, OSRM) or static CSV files
+4. **State Update**: Page component updates React state with fetched data
+5. **UI Render**: Components re-render with new data
+6. **Auto-refresh**: Timer triggers periodic service calls for real-time updates
+
 ## Key Features
 
 ### Real-Time Data Integration
